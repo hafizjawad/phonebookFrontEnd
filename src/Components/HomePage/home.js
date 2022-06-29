@@ -1,11 +1,12 @@
 import React, { useState, useEffect } from "react";
-import { Link } from "react-router-dom";
+import { useNavigate, Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import axios from "axios";
 
 import "./home.css";
 
 const HomePage = ({ User, setLoginUser }) => {
+  const navigate = useNavigate();
   const [data, setData] = useState([]);
   console.log("User from home", User);
 
@@ -20,18 +21,28 @@ const HomePage = ({ User, setLoginUser }) => {
     loadData();
   }, []);
 
-  // const deleteContact = (id) => {
-  //   if (window.confirm("Are Your Sure you want to Delete Record")) {
-  //     axios.delete(`http://localhost:8000/api/delete/${id}`);
-  //     toast.success("Contact Deleted Successfully");
-  //     setTimeout(() => loadData(), 500);
-  //   }
+  const deleteContact = (id) => {
+    if (window.confirm("Are Your Sure you want to Delete Record")) {
+      axios.delete(`http://localhost:8000/api/delete/${id}`);
+      toast.success("Contact Deleted Successfully");
+      setTimeout(() => loadData(), 500);
+    }
+  };
+
+  const logout = () => {
+    setLoginUser("");
+    navigate("/");
+  };
 
   return (
     <div className="table_body">
-      {/* <Link to="/addinfo">
-          <button className="btn btn-contact">Add Record</button>
-        </Link> */}
+      <Link to={`addinfo/${User.id}`}>
+        {console.log("from link", User.id)}
+        <button className="btn btn-contact">Add Contact</button>
+      </Link>
+      <button className="btn btn-logout" onClick={logout}>
+        Logout
+      </button>
       <table className="styled-table">
         <thead>
           <tr>
@@ -49,7 +60,7 @@ const HomePage = ({ User, setLoginUser }) => {
                 <td>{item.name}</td>
                 <td>{item.phoneno}</td>
                 <td>
-                  <Link to={`update/${item.id}`}>
+                  <Link to={`editinfo/${item.id}`}>
                     <button className="btn btn-edit">Edit</button>
                   </Link>
                   <button

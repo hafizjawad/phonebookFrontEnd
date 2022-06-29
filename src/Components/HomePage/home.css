@@ -1,5 +1,5 @@
 .table_body {
-  margin-top: 30px;
+  /* margin-top: 200px; */
 }
 .styled-table {
   border-collapse: collapse;
@@ -54,14 +54,16 @@
   background-color: #f44336;
 }
 
-.btn-view {
-  background-color: #e7e7e7;
-  color: black;
-}
-
 .btn-contact {
   background-color: #e82764;
   margin-bottom: 10px;
   justify-content: center;
-  margin-left: 300px;
+  margin-left: 260px;
+}
+
+.btn-logout {
+  background-color: #e82764;
+  margin-bottom: 10px;
+  justify-content: center;
+  margin-left: 2px;
 }
