@@ -1,11 +1,13 @@
-import "./App.css";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import { useState } from "react";
+
 import HomePage from "./Components/HomePage/home";
 import Login from "./Components/Login/login";
 import Register from "./Components/Register/register";
 import Add from "./Components/Add/Add";
 import Edit from "./Components/Edit/Edit";
-import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
-import { useState } from "react";
+
+import "./App.css";
 
 function App() {
   const [user, setLoginUser] = useState({});
@@ -32,7 +34,6 @@ function App() {
           <Route path="/register" element={<Register />} />
           <Route path="/addinfo/:id" element={<Add />} />
           <Route path="/editinfo/:id" element={<Edit />} />
-          {/* <Route path="/update/:id" element={<AddEdit User={user} />} /> */}
         </Routes>
       </Router>
     </div>
