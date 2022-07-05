@@ -9,19 +9,20 @@ import "react-toastify/dist/ReactToastify.css";
 const initialState = {
   name: "",
   phoneno: "",
+  image: "",
 };
 
 function Add() {
   const { id } = useParams();
   console.log("id from add", id);
   const [state, setState] = useState(initialState);
-  const { name, phoneno } = state;
+  const { name, phoneno, image } = state;
   const navigate = useNavigate();
 
   const submitHandler = (event) => {
     event.preventDefault();
 
-    if (!name || !phoneno) {
+    if (!name || !phoneno || !image) {
       toast.error("Please Enter Value in All Fields");
     } else {
       axios
@@ -29,9 +30,10 @@ function Add() {
           id,
           name,
           phoneno,
+          image,
         })
         .then(() => {
-          setState({ name: "", phoneno: "" });
+          setState({ name: "", phoneno: "", image: "" });
         })
         .catch((err) => {
           toast.error(err.response.data);
@@ -60,7 +62,11 @@ function Add() {
         pauseOnHover
       />
 
-      <form className="form_in_body" onSubmit={submitHandler}>
+      <form
+        className="form_in_body"
+        enctype="multipart/form-data"
+        onSubmit={submitHandler}
+      >
         <label htmlFor="name">Name</label>
         <input
           type="text"
@@ -77,6 +83,13 @@ function Add() {
           id="phoneno"
           placeholder="Enter Phone No"
           value={phoneno || ""}
+          onChange={handleInputChange}
+        ></input>
+        <label htmlFor="image">Image</label>
+        <input
+          type="file"
+          name="image"
+          id="image"
           onChange={handleInputChange}
         ></input>
         <input type="submit" value={"Save"}></input>

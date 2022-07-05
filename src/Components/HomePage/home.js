@@ -5,15 +5,15 @@ import axios from "axios";
 
 import "./home.css";
 
-const HomePage = ({ User, setLoginUser }) => {
+const HomePage = ({ id, User, setLoginUser }) => {
   const navigate = useNavigate();
   const [data, setData] = useState([]);
   console.log("User from home", User);
 
   const loadData = async () => {
-    const response = await axios.get(
-      `http://localhost:8000/api/get/${User.id}`
-    );
+    const response = await axios.get(`http://localhost:8000/api/get/${id}`, {
+      headers: { authorization: JSON.parse(localStorage.getItem("jwt")) },
+    });
     setData(response.data);
   };
 
@@ -31,13 +31,15 @@ const HomePage = ({ User, setLoginUser }) => {
 
   const logout = () => {
     setLoginUser("");
+    localStorage.removeItem("userId");
+    localStorage.removeItem("jwt");
     navigate("/");
   };
 
   return (
     <div className="table_body">
-      <Link to={`addinfo/${User.id}`}>
-        {console.log("from link", User.id)}
+      <Link to={`addinfo/${id}`}>
+        {console.log("from link", id)}
         <button className="btn btn-contact">Add Contact</button>
       </Link>
       <button className="btn btn-logout" onClick={logout}>
