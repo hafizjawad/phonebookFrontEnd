@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { useNavigate, useParams, Link } from "react-router-dom";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import Navbar from "../Navbar/Navbar";
 
 import "./Edit.css";
 import "react-toastify/dist/ReactToastify.css";
@@ -15,7 +16,11 @@ function Edit() {
 
   useEffect(() => {
     axios
-      .get(`http://localhost:8000/api/getphone/${id}`)
+      .get(`http://localhost:8000/api/getphone/${id}`, {
+        headers: {
+          authorization: "Bearer " + JSON.parse(localStorage.getItem("jwt")),
+        },
+      })
       .then((resp) => setState({ ...resp.data }));
   }, []);
 
@@ -26,11 +31,20 @@ function Edit() {
       toast.error("Please Enter Value in All Fields");
     } else {
       axios
-        .put(`http://localhost:8000/api/update`, {
-          id,
-          name,
-          phoneno,
-        })
+        .put(
+          `http://localhost:8000/api/update`,
+          {
+            id,
+            name,
+            phoneno,
+          },
+          {
+            headers: {
+              authorization:
+                "Bearer " + JSON.parse(localStorage.getItem("jwt")),
+            },
+          }
+        )
         .then(() => {
           setState({ name: "", phoneno: "" });
         })
@@ -45,44 +59,48 @@ function Edit() {
     setState({ ...state, [name]: value });
   };
   return (
-    <div className="form_body">
-      <ToastContainer
-        position="top-center"
-        autoClose={4000}
-        hideProgressBar={false}
-        newestOnTop={false}
-        closeOnClick
-        rtl={false}
-        pauseOnFocusLoss
-        draggable
-        pauseOnHover
-      />
+    <>
+      <Navbar />
 
-      <form className="form_in_body" onSubmit={submitHandler}>
-        <label htmlFor="name">Name</label>
-        <input
-          type="text"
-          name="name"
-          id="name"
-          placeholder="Enter Name"
-          value={name || ""}
-          onChange={handleInputChange}
-        ></input>
-        <label htmlFor="phoneno">Phone No</label>
-        <input
-          type="number"
-          name="phoneno"
-          id="phoneno"
-          placeholder="Enter Phone No"
-          value={phoneno || ""}
-          onChange={handleInputChange}
-        ></input>
-        <input type="submit" value={"Update"}></input>
-        <Link to="/">
-          <input type="button" value="Go Back"></input>
-        </Link>
-      </form>
-    </div>
+      <div className="form_body">
+        <ToastContainer
+          position="top-center"
+          autoClose={4000}
+          hideProgressBar={false}
+          newestOnTop={false}
+          closeOnClick
+          rtl={false}
+          pauseOnFocusLoss
+          draggable
+          pauseOnHover
+        />
+
+        <form className="form_in_body" onSubmit={submitHandler}>
+          <label htmlFor="name">Name</label>
+          <input
+            type="text"
+            name="name"
+            id="name"
+            placeholder="Enter Name"
+            value={name}
+            onChange={handleInputChange}
+          ></input>
+          <label htmlFor="phoneno">Phone No</label>
+          <input
+            type="number"
+            name="phoneno"
+            id="phoneno"
+            placeholder="Enter Phone No"
+            value={phoneno}
+            onChange={handleInputChange}
+          ></input>
+          <input type="submit" value={"Update"}></input>
+          <Link to="/userhome">
+            <input type="button" value="Go Back"></input>
+          </Link>
+        </form>
+      </div>
+    </>
   );
 }
 
